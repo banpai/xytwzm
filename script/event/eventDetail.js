@@ -2,7 +2,7 @@ window.apiready = function () {
 
   var vm = new Vue({
     el: "#app",
-    mixins: [upload],
+    mixins: [upload, mixBase],
     created: function () {
       var eventObj = api.pageParam.name;
       var eventType = api.pageParam.type;
@@ -10,6 +10,7 @@ window.apiready = function () {
       if (eventType && eventType == "notEnd") {
         this.isEdit = true;
       }
+      this.eventId = eventObj.eventId;
       this.eventTitle = eventObj.eventTitle;
       this.serialNum = eventObj.serialNum;
 
@@ -31,6 +32,7 @@ window.apiready = function () {
       if (eventObj.myType == "approve") {
         this.getForm();
       }
+      this.getSupervise();
     },
     data: function () {
       return {
@@ -43,6 +45,8 @@ window.apiready = function () {
         eventInfo: {},
         eventTitle: '',
         serialNum: '',
+        eventId: '',
+        superviseArray: [],
         emergency: '',
         accountId: '',
         wf_wfComments: '',
@@ -158,6 +162,32 @@ window.apiready = function () {
           self.selectOrsubmit();
         }, url);
       },
+      // 获取监督信息
+      getSupervise() {
+        if (this.eventId) {
+          var token = window.localStorage.getItem('token');
+          var url = UICore.serviceUrl
+            + '/subsystem/businessSearch/handleInfo?'
+            + 'eventId=' + this.eventId
+            + '&token=' + token;
+          api.ajax({
+            url: url,
+            method: 'post'
+          }, function (ret, err) {
+            if (ret) {
+              if (ret.code == '201') {
+                vm.refreshToken('getSupervise', {});
+              } else if (ret.success == true) {
+                if (ret.array && ret.array.length > 0) {
+                  vm.superviseArray = ret.array;
+                }
+              }
+            } else {
+              api.alert({ msg: JSON.stringify(err) });
+            }
+          });
+        }
+      },
       selectOrsubmit: function () {
         this.alltag.wf_eventId = this.eventInfo.eventId;
         var self = this;
@@ -197,7 +227,7 @@ window.apiready = function () {
                 });
                 self.closeWin();
               }
-            }else{
+            } else {
               alert(JSON.stringify(ret.ErrorInfo) || '接口调用失败');
             }
           } else {

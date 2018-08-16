@@ -27,7 +27,7 @@
     <div id="dp_title">
       <label v-cloak>{{eventTitle}}</label>
     </div>
-    <div id="dp_bd" style="border: 1px solid #000;height: auto;">
+    <div id="dp_bd" style="height: auto;">
       <div class="dp_id">
         事件编号：
         <label id="serialNum" v-cloak>{{serialNum}}</label>
@@ -36,13 +36,15 @@
         事件等级：
         <label id="emergency" v-cloak>{{emergency}}</label>
       </div>
-      <div class="dp_grade" style="color: red;">
-        1.督办人：
-        <label id="emergency" v-cloak>督办人 2122112</label>
-      </div>
-      <div class="dp_grade" style="color: red;">
-        &nbsp;&nbsp;督办内容：
-        <label id="emergency" v-cloak>督办人 2122112sss</label>
+      <div v-if="superviseArray.length > 0" v-for="(item, index) in  superviseArray" :key="index">
+        <div class="dp_grade" style="color: red;">
+          {{index + 1}}.督办人：
+          <label id="emergency" v-cloak>{{item[0]}} {{item[1]}}</label>
+        </div>
+        <div class="dp_grade" style="color: red;">
+          &nbsp;&nbsp;&nbsp;督办内容：
+          <label id="emergency" v-cloak>{{item[2]}}</label>
+        </div>
       </div>
     </div>
     <div class="event-detail" id="eventDetail">
