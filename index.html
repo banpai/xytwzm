@@ -49,17 +49,15 @@
     #footer ul li:nth-child(1) {
       background-image: url(./image/bottombtn0101.png);
     }
-
     #footer ul li:nth-child(2) {
-      background-image: url(./image/bottombtn0401.png);
+      background-image: url(./image/bottombtn5555.png);
     }
-
     #footer ul li:nth-child(3) {
-      background-image: url(./image/bottombtn0301.png);
+      background-image: url(./image/bottombtn0401.png);
     }
 
     #footer ul li:nth-child(4) {
-      background-image: url(./image/bottombtn0401.png);
+      background-image: url(./image/bottombtn5555.png);
     }
 
     #footer ul li:nth-child(1).active {
@@ -67,11 +65,12 @@
     }
 
     #footer ul li:nth-child(2).active {
-      background-image: url(./image/bottombtn0402.png);
+      background-image: url(./image/bottombtn555566.png);
     }
 
+
     #footer ul li:nth-child(3).active {
-      background-image: url(./image/bottombtn0302.png);
+      background-image: url(./image/bottombtn0402.png);
     }
 
     #footer ul li:nth-child(4).active {
@@ -89,8 +88,8 @@
     <header>
       <ul>
         <li class="border-b active">工作</li>
-        <!-- <li class="border-b" >地图</li>
-              <li class="border-b" >联系人</li> -->
+        <li class="border-b" >考情打卡</li>
+              <!-- <li class="border-b" >联系人</li> -->
         <li class="border-b">我的</li>
       </ul>
     </header>
@@ -100,8 +99,8 @@
     <div id="footer" class="border-t">
       <ul class="flex-wrap">
         <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active">工作</li>
-        <!-- <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">地图</li>
-                <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">联系人</li> -->
+        <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">打卡</li>
+        <!-- <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">联系人</li> -->
         <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">我的</li>
       </ul>
     </div>
@@ -189,10 +188,10 @@
       } else if (i == 1) {
         name = 'map';
         //urls = './html/map.html'
-        urls = './html/My/my.html'
+        urls = './html/map/punchmap.html'
       } else if (i == 2) {
         name = 'contact';
-        urls = './html/contact.html'
+        urls = './html/My/my.html'
       } else if (i == 3) {
         name = 'my';
         urls = './html/My/my.html'
