@@ -56,6 +56,43 @@ var mapload = function (list, center) {
     layers: [layer25D],
     controls: [new OMAP.Control.Navigation()]
   };
+
+  // var mirrorUrls = ["http://t0.tianditu.com/DataServer",
+  //   "http://t1.tianditu.com/DataServer",
+  //   "http://t2.tianditu.com/DataServer",
+  //   "http://t3.tianditu.com/DataServer",
+  //   "http://t4.tianditu.com/DataServer",
+  //   "http://t5.tianditu.com/DataServer",
+  //   "http://t6.tianditu.com/DataServer"
+  // ];
+  // var maxExt = (new OMAP.Bounds(-180, -90, 180, 90));
+  // var vectorLayerGJ = new OMAP.Layer.TDTLayer("Vec", "/maptile", {
+  //   mapType: 'vec_c',
+  //   topLevel: 1,
+  //   bottomLevel: 18,
+  //   visibility: true,
+  //   isBaseLayer: true,
+  //   maxExtent: maxExt,
+  //   mirrorUrls: mirrorUrls
+  // });
+  // var vecLabelLayerGJ = new OMAP.Layer.TDTLayer("vecLabel", "/maptile", {
+  //   mapType: 'cva_c',
+  //   topLevel: 1,
+  //   bottomLevel: 18,
+  //   visibility: true,
+  //   isBaseLayer: false,
+  //   maxExtent: maxExt,
+  //   mirrorUrls: mirrorUrls
+  // });
+  // var mapOptions = {
+  //   zoom: 10,
+  //   numZoomLevels: 18,
+  //   fallThrough: true,
+  //   layers: [vecLabelLayerGJ, vectorLayerGJ],
+  //   center: [129.51454, 42.90780],
+  //   controls: [new OMAP.Control.TouchNavigation()]
+  // };
+
   // 初始化地图
   map = new OMAP.Map("mapDiv", mapOptions);
   if (list) {
@@ -124,6 +161,18 @@ apiready = function () {
       type: 3,
       toWorkTime: '',
       outWorkTime: '',
+      // 第一次上班打卡时间
+      toWorkTimeFirst: '',
+      // 第一次下班打卡时间
+      outWorkTimeFirst: '',
+      // 第二次上班打卡时间
+      toWorkTimeSecond: '',
+      // 第二次下班打卡时间
+      outWorkTimeSecond: '',
+      // 第三次上班打卡时间
+      toWorkTimeThree: '',
+      // 第三次下班打卡时间
+      outWorkTimeThree: '',
       x: '',
       y: ''
     },
@@ -136,9 +185,9 @@ apiready = function () {
         var info = $api.getStorage('userinf');
         this.accountId = info.accountId;
         // 记得删除
-        // if (testFlag) {
-        //   this.accountId = 'ff80808148adba0f0148b0c01b935043';
-        // }
+        if (testFlag) {
+          this.accountId = 'ff80808148adba0f0148b0c01b935043';
+        }
         // 获取打卡数据
         var url = UICore.serviceUrl + 'mobile/mobileWf.shtml?act=getGraphics&accountId=' + this.accountId;
         api.ajax({
@@ -170,10 +219,10 @@ apiready = function () {
       },
       // 初始化地图
       _initMap(list, object) {
-        if(object){
+        if (object) {
           mapcontainer.style.display = "block";
           mapload(list, object);
-        }else{
+        } else {
           this.type = 3;
           api.toast({
             msg: '无法打卡',
@@ -185,7 +234,7 @@ apiready = function () {
       },
       // 重新定位个人位置
       refreshLocation() {
-        if(this.type == 3){
+        if (this.type == 3) {
           api.toast({
             msg: '数据出错，无法定位',
             duration: 2000,
@@ -193,10 +242,10 @@ apiready = function () {
             location: 'bottom'
           });
           return false;
-        }else{
+        } else {
           this.getLocation();
         }
-        
+
       },
       // 定位坐标位置
       getLocation: function () {
@@ -247,8 +296,16 @@ apiready = function () {
           if (ret.success == true) {
             // alert(JSON.stringify(ret.object));
             vm.type = ret.type;
-            vm.toWorkTime = ret.object.toWorkTime;
-            vm.outWorkTime = ret.object.outWorkTime;
+
+            vm.toWorkTimeFirst = ret.object.toWorkTimeFirst;
+            vm.outWorkTimeFirst = ret.object.outWorkTimeFirst;
+
+            vm.toWorkTimeSecond = ret.object.toWorkTimeSecond;
+            vm.outWorkTimeSecond = ret.object.outWorkTimeSecond;
+
+            vm.toWorkTimeThree = ret.object.toWorkTimeThree;
+            vm.outWorkTimeThree = ret.object.outWorkTimeThree;
+
             window.localStorage.setItem('punch', ret.type);
           } else {
             if (ret.message) {
@@ -269,7 +326,7 @@ apiready = function () {
       },
       // 打卡
       punch() {
-        if(this.type == 3){
+        if (this.type == 3) {
           api.toast({
             msg: '数据出错，无法打卡',
             duration: 2000,

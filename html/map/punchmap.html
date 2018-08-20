@@ -78,14 +78,35 @@
           <div v-else class="warn">您未进入考勤范围</div>
           <div class="small-btn" @click="refreshLocation">重新定位</div>
         </div>
-        <div class="flex tip" v-if="toWorkTime">
-          <div>上班打卡成功</div>
-          <div>{{toWorkTime}}</div>
+        
+        <div class="flex tip" v-if="toWorkTimeFirst">
+          <div>第一次上班打卡成功</div>
+          <div>{{toWorkTimeFirst}}</div>
         </div>
-        <div class="flex tip" v-if="outWorkTime">
-          <div>下班打卡成功</div>
-          <div>{{outWorkTime}}</div>
+        <div class="flex tip" v-if="outWorkTimeFirst">
+          <div>第一次下班打卡成功</div>
+          <div>{{outWorkTimeFirst}}</div>
         </div>
+
+        <div class="flex tip" v-if="toWorkTimeSecond">
+          <div>第二次上班打卡成功</div>
+          <div>{{toWorkTimeSecond}}</div>
+        </div>
+        <div class="flex tip" v-if="outWorkTimeSecond">
+          <div>第二次下班打卡成功</div>
+          <div>{{outWorkTimeSecond}}</div>
+        </div>
+
+        <div class="flex tip" v-if="toWorkTimeThree">
+          <div>第三次上班打卡成功</div>
+          <div>{{toWorkTimeThree}}</div>
+        </div>
+        <div class="flex tip" v-if="outWorkTimeThree">
+          <div>第三次下班打卡成功</div>
+          <div>{{outWorkTimeThree}}</div>
+        </div>
+
+
         <div v-if="type == 0 || type == 1" :class="isAttendance ? 'btn' : 'btn hui'" @click="punch">
           <span v-if="type == 0">上班打卡</span>
           <span v-if="type == 1">下班打卡</span>
