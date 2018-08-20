@@ -6,6 +6,7 @@
   // var serviceUrl = "http://10.63.32.89:57777/";
   var serviceUrl = "http://61.185.20.71:80/"
   // var serviceUrl = "http://192.168.1.11:8080/";
+  
   var serviceUrlSet = window.localStorage.getItem('ipBp2');
   
   if(!serviceUrlSet){
