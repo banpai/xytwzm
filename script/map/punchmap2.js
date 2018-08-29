@@ -1,4 +1,4 @@
-var testFlag = true;
+var testFlag = false;
 var vm = null;
 // 地图选择 打点
 var taggingMarkers = null;
@@ -13,85 +13,92 @@ var updateTag = function () {
   tag = "tag" + tagSquence;
 };
 var mapload = function (list, center) {
-  if (map) return;
-  var config = new OMAP.Config({
-    imagePath: UICore.mapServiceUrl + "image",
-    jsPath: UICore.mapServiceUrl + "resource/js/",
-    mapId: 1,
-    scale: 0.353,
-    hotFileLevel: 5,
-    overlook: Math.PI / 4,
-    rotate: Math.PI / 4
-  });
-  layer25D = new OMAP.Layer.NOGISLayer("25D", UICore.mapServiceUrl + "resource/", {
-    isBaseLayer: true,
-    transparent: true,
-    defaultImage: '../script/Nogis-api/img/transparent.png',
-    loadHotspot: false,
-    hotspotTouch: null
-  });
-  var ext = new OMAP.Bounds(-56255400.354765005, -56255400.354765005, 56255400.354765005, 56255400.354765005);
+  // if (map) return;
+  // var config = new OMAP.Config({
+  //   imagePath: UICore.mapServiceUrl + "image",
+  //   jsPath: UICore.mapServiceUrl + "resource/js/",
+  //   mapId: 1,
+  //   scale: 0.353,
+  //   hotFileLevel: 5,
+  //   overlook: Math.PI / 4,
+  //   rotate: Math.PI / 4
+  // });
+  // layer25D = new OMAP.Layer.NOGISLayer("25D", UICore.mapServiceUrl + "resource/", {
+  //   isBaseLayer: true,
+  //   transparent: true,
+  //   defaultImage: '../script/Nogis-api/img/transparent.png',
+  //   loadHotspot: false,
+  //   hotspotTouch: null
+  // });
+  // var ext = new OMAP.Bounds(-56255400.354765005, -56255400.354765005, 56255400.354765005, 56255400.354765005);
+  // var mapCenter = UICore.mapCenter;
+  // if (center) {
+  //   mapCenter = [center.x, center.y];
+  // }
+  // 地图配置
+  // var mapOptions = {
+  //   extent: ext,
+  //   center: mapCenter,
+  //   zoom: 4,
+  //   config: config,
+  //   resolutions: [
+  //     107.29866095498084608,
+  //     53.64933047749042304,
+  //     26.82466523874521152,
+  //     13.41233261937260576,
+  //     6.70616630968630288,
+  //     3.35308315484315144,
+  //     1.67654157742157572,
+  //     0.83827078871078786,
+  //     0.41913539435539393
+  //   ],
+  //   numZoomLevels: 9,
+  //   layers: [layer25D],
+  //   controls: [new OMAP.Control.Navigation()]
+  // };
+
+  var mirrorUrls = ["http://t0.tianditu.com/DataServer",
+    "http://t1.tianditu.com/DataServer",
+    "http://t2.tianditu.com/DataServer",
+    "http://t3.tianditu.com/DataServer",
+    "http://t4.tianditu.com/DataServer",
+    "http://t5.tianditu.com/DataServer",
+    "http://t6.tianditu.com/DataServer"
+  ];
+  var maxExt = (new OMAP.Bounds(-180, -90, 180, 90));
   var mapCenter = UICore.mapCenter;
   if (center) {
-    mapCenter = [center.x, center.y];
+    var coordTran3 = new Transformation2(45, 45, 49);
+    var w84 = coordTran3.OCN2WGS84(center.x, center.y); //从后台获取到的ocn坐标转为84坐标
+    mapCenter = [w84.x, w84.y];
   }
-  // 地图配置
+  var vectorLayerGJ = new OMAP.Layer.TDTLayer("Vec", "/maptile", {
+    mapType: 'vec_c',
+    topLevel: 6,
+    bottomLevel: 18,
+    visibility: true,
+    isBaseLayer: true,
+    maxExtent: maxExt,
+    mirrorUrls: mirrorUrls
+  });
+  var vecLabelLayerGJ = new OMAP.Layer.TDTLayer("vecLabel", "/maptile", {
+    mapType: 'cva_c',
+    topLevel: 6,
+    bottomLevel: 18,
+    visibility: true,
+    isBaseLayer: false,
+    maxExtent: maxExt,
+    mirrorUrls: mirrorUrls
+  });
   var mapOptions = {
-    extent: ext,
+    zoom: 10,
+    numZoomLevels: 13,
+    fallThrough: true,
+    layers: [vecLabelLayerGJ, vectorLayerGJ],
+    //center: [129.51454, 42.90780],
     center: mapCenter,
-    zoom: 4,
-    config: config,
-    resolutions: [
-      107.29866095498084608,
-      53.64933047749042304,
-      26.82466523874521152,
-      13.41233261937260576,
-      6.70616630968630288,
-      3.35308315484315144,
-      1.67654157742157572,
-      0.83827078871078786,
-      0.41913539435539393
-    ],
-    numZoomLevels: 9,
-    layers: [layer25D],
-    controls: [new OMAP.Control.Navigation()]
+    controls: [new OMAP.Control.TouchNavigation()]
   };
-
-  // var mirrorUrls = ["http://t0.tianditu.com/DataServer",
-  //   "http://t1.tianditu.com/DataServer",
-  //   "http://t2.tianditu.com/DataServer",
-  //   "http://t3.tianditu.com/DataServer",
-  //   "http://t4.tianditu.com/DataServer",
-  //   "http://t5.tianditu.com/DataServer",
-  //   "http://t6.tianditu.com/DataServer"
-  // ];
-  // var maxExt = (new OMAP.Bounds(-180, -90, 180, 90));
-  // var vectorLayerGJ = new OMAP.Layer.TDTLayer("Vec", "/maptile", {
-  //   mapType: 'vec_c',
-  //   topLevel: 1,
-  //   bottomLevel: 18,
-  //   visibility: true,
-  //   isBaseLayer: true,
-  //   maxExtent: maxExt,
-  //   mirrorUrls: mirrorUrls
-  // });
-  // var vecLabelLayerGJ = new OMAP.Layer.TDTLayer("vecLabel", "/maptile", {
-  //   mapType: 'cva_c',
-  //   topLevel: 1,
-  //   bottomLevel: 18,
-  //   visibility: true,
-  //   isBaseLayer: false,
-  //   maxExtent: maxExt,
-  //   mirrorUrls: mirrorUrls
-  // });
-  // var mapOptions = {
-  //   zoom: 10,
-  //   numZoomLevels: 18,
-  //   fallThrough: true,
-  //   layers: [vecLabelLayerGJ, vectorLayerGJ],
-  //   center: [129.51454, 42.90780],
-  //   controls: [new OMAP.Control.TouchNavigation()]
-  // };
 
   // 初始化地图
   map = new OMAP.Map("mapDiv", mapOptions);
@@ -110,7 +117,9 @@ function init_addTagging(x, y) {
   var size = new OMAP.Size(21, 25);
   var offset = new OMAP.Pixel(-(size.w / 2), -size.h);
   var icon = new OMAP.Icon('../../image/icon/icon220px.png', size, offset);
-  var marker = new OMAP.Marker(new OMAP.LonLat(x, y), icon);
+  var coordTran5 = new Transformation2(45, 45, 49);
+  var w84_5 = coordTran5.OCN2WGS84(x, y); //ocn坐标转84
+  var marker = new OMAP.Marker(new OMAP.LonLat(w84_5.x, w84_5.y), icon);
   taggingMarkers.addMarker(marker);
 }
 
@@ -128,8 +137,10 @@ function init_EditPolygon(list) {
   });
   map.addLayer(scaleLayer);
   var pts = [];
+  var coordTran4 = new Transformation2(45, 45, 49);
   for (var i = 0, len = list.length; i < len; i++) {
-    var pt = new OMAP.Geometry.Point(list[i].x, list[i].y);
+    var w84_4 = coordTran4.OCN2WGS84(list[i].x, list[i].y); //ocn坐标转84
+    var pt = new OMAP.Geometry.Point(w84_4.x, w84_4.y);
     pts.push(pt);
   }
   var ring = new OMAP.Geometry.LinearRing(pts);
@@ -305,7 +316,6 @@ apiready = function () {
 
             vm.toWorkTimeThree = ret.object.toWorkTimeThree;
             vm.outWorkTimeThree = ret.object.outWorkTimeThree;
-
             window.localStorage.setItem('punch', ret.type);
           } else {
             if (ret.message) {

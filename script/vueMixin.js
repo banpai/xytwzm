@@ -734,6 +734,55 @@ var upload = {
         cb && cb();
       }
     },
+    //上传附件(待我审批，需要上传2张以上照片才允许提交)
+    uploadAttachForEventDetail: function (cb, url) {
+      if(this.imgarray.imgpaths.length<2){
+        api.alert({
+          msg: '请上传2张及以上图片'
+        });
+        return;
+      }
+      var imgarray = [];
+      imgarray = imgarray.concat(this.imgarray.imgpaths);
+      imgarray = imgarray.concat(this.imgarray.videopaths);
+      imgarray = imgarray.concat(this.imgarray.filepaths);
+      imgarray = imgarray.concat(this.imgarray.soundRecords);
+      var mycomponent = this;
+      var upUrl = UICore.serviceUrl + 'mobile/mobileWf.shtml?act=uploadAttach_HZ&loginId=' + this.accountId + '&workId=' + this.alltag.wf_flowInstanceId + '&nodeId=' + this.alltag.wf_activityId;
+      if (url) {
+        upUrl = url;
+      }
+      if (imgarray.length > 0) {
+        UICore.showLoading('上传附件中...', '稍等...');
+        api.ajax({
+          url: upUrl,
+          method: 'post',
+          tag: 'grid',
+          data: {
+            files: {
+              file: imgarray
+            }
+          }
+        }, function (ret, err) {
+          api.hideProgress();
+          if (ret) {
+            if (ret.success == true) {
+              // mycomponent.submitForm();
+              cb && cb(ret);
+            } else {
+
+            }
+          } else {
+            api.hideProgress();
+            api.alert({
+              msg: JSON.stringify(err)
+            });
+          }
+        });
+      } else {
+        cb && cb();
+      }
+    },
     //上传帮扶记录的附件
     uploadAttachForHelpRecord: function (cb) {
       this.imgarray.imgpaths = this.imgarray.imgpaths.concat(this.imgarray.videopaths);

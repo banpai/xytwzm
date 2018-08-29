@@ -49,9 +49,11 @@
     #footer ul li:nth-child(1) {
       background-image: url(./image/bottombtn0101.png);
     }
+
     #footer ul li:nth-child(2) {
       background-image: url(./image/bottombtn5555.png);
     }
+
     #footer ul li:nth-child(3) {
       background-image: url(./image/bottombtn0401.png);
     }
@@ -88,8 +90,8 @@
     <header>
       <ul>
         <li class="border-b active">工作</li>
-        <li class="border-b" >考情打卡</li>
-              <!-- <li class="border-b" >联系人</li> -->
+        <li class="border-b">考勤打卡</li>
+        <!-- <li class="border-b" >联系人</li> -->
         <li class="border-b">我的</li>
       </ul>
     </header>
@@ -98,7 +100,8 @@
     </div>
     <div id="footer" class="border-t">
       <ul class="flex-wrap">
-        <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con active">工作</li>
+        <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con
+            active">工作</li>
         <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">打卡</li>
         <!-- <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">联系人</li> -->
         <li tapmode="hover" onclick="randomSwitchBtn( this );" class="flex-con">我的</li>
@@ -119,10 +122,12 @@
   function sendLocation() {
     var info = $api.getStorage('userinf');
     var accountId = info.accountId;
-    var intervalTime = ($api.getStorage('userData').intervalTime > 0 ? $api.getStorage('userData').intervalTime * 1000 : false) || 60000;
+    var intervalTime = ($api.getStorage('userData').intervalTime > 0 ? $api.getStorage('userData').intervalTime * 1000 :
+      false) || 60000;
     var baiduLocation = api.require('baiduLocation');
-    var punch = window.localStorage.getItem('punch');
+
     if ($api.getStorage('userData').intervalTime != '-1') {
+      //alert('-1');
       // setInterval(function () {
       //   var sw = api.require('screenWake');
       //   sw.addScreenWake();
@@ -135,35 +140,47 @@
       //   });
       // }, 5000);
       setInterval(function () {
+        var punch = window.localStorage.getItem('punch');
+
         // 判断是否上班打卡
         if (punch == 1) {
-          baiduLocation.startLocation({
-            accuracy: '10m',
-            filter: 5,
-            autoStop: true,
-          }, function (ret, err) {
-            if (ret.status) {
-              if (ret.latitude == '0' && ret.longitude == '0') {
-                api.toast({
-                  msg: '您的GPS没打开，请打开您的GPS',
-                  duration: 3000,
-                  location: 'bottom'
-                });
-              }
-              var latitude = ret.latitude;// 纬度，浮点数，范围为90 ~ -90
-              var longitude = ret.longitude// 经度，浮点数，范围为180 ~ -180。
-              var coordinate = longitude + "," + latitude;
-              api.ajax({
-                url: UICore.serviceUrlMock + 'mobile/mobileInterface.shtml?act=uploadCoordinate&accountId=' + accountId + '&coordinate=' + coordinate,
-                method: 'post'
-              }, function (ret, err) {
-                // alert(latitude);
-                // alert(JSON.stringify(ret));
-              });
-            } else {
-              console.log("定位失败");
-            }
-          });
+          /**********************************百度方法begin**********************************************/
+          // baiduLocation.startLocation({
+          //   accuracy: '10m',
+          //   filter: 5,
+          //   autoStop: true,
+          // }, function (ret, err) {
+          //   if (ret.status) {
+          //     if (ret.latitude == '0' && ret.longitude == '0') {
+          //       api.toast({
+          //         msg: '您的GPS没打开，请打开您的GPS',
+          //         duration: 3000,
+          //         location: 'bottom'
+          //       });
+          //     }
+          //     var latitude = ret.latitude;// 纬度，浮点数，范围为90 ~ -90
+          //     var longitude = ret.longitude// 经度，浮点数，范围为180 ~ -180。
+          //     var coordinate = longitude + "," + latitude;
+          //     api.ajax({
+          //       url: UICore.serviceUrlMock + 'mobile/mobileInterface.shtml?act=uploadCoordinate&accountId=' + accountId + '&coordinate=' + coordinate,
+          //       method: 'post'
+          //     }, function (ret, err) {
+          //       // alert(latitude);
+          //       // alert(JSON.stringify(ret));
+          //     });
+          //   } else {
+          //     console.log("定位失败");
+          //   }
+          // });
+          /********************************百度方法end************************************************/
+
+          var baidsss = api.require('gridtrail');
+          var param = {
+            url: UICore.serviceUrl + "mobile/mobileInterface.shtml",
+            accountId: accountId
+          };
+          baidsss.getGPS(param);
+
         }
       }, intervalTime);
     }
@@ -256,8 +273,14 @@
   }
 
   function closrFrame() {
-    api.closeFrame({ name: "zzjg_frame" });
-    api.closeFrame({ name: "wly_frame" });
-    api.closeFrame({ name: "qz_frame" });
+    api.closeFrame({
+      name: "zzjg_frame"
+    });
+    api.closeFrame({
+      name: "wly_frame"
+    });
+    api.closeFrame({
+      name: "qz_frame"
+    });
   }
 </script>

@@ -158,7 +158,7 @@ window.apiready = function () {
       uploadAttaches: function () {
         var url = UICore.serviceUrl + 'mobile/mobileWf.shtml?act=uploadAttach_HZ&loginId=' + this.accountId + '&workId=' + this.alltag.flowInstanceId + '&nodeId=' + this.alltag.activityId;
         var self = this;
-        this.uploadAttach(function (r) {
+        this.uploadAttachForEventDetail(function (r) {
           self.selectOrsubmit();
         }, url);
       },

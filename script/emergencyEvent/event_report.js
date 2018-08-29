@@ -218,7 +218,7 @@ window.apiready = function () {
       },
       //点击提交按钮
       subButtonClick: function () {
-
+        alert(JSON.stringify(this.f))
 
 
         if (this.f.title == '') {
@@ -254,6 +254,7 @@ window.apiready = function () {
           alert('请选择结束后是否公示');
           return false;
         }
+        
         var _self = this;
         // this.show.zcover = true;
         // this.show.submitDiv = true;

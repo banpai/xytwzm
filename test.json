@@ -1,0 +1,55 @@
+{
+    "accountId": "7a8a8f3947ed85e50147ed8bae0e0000",
+    "title": "",
+    "content": "",
+    "eventGrade": "4",
+    "eventGradeName": "特别重大环境事件",
+    "noticeDepartment": "",
+    "noticeDepartmentStr": "",
+    "departmentArray": [],
+    "msgPush": "1",
+    "msgStr": "是",
+    "isSendMessage": [
+        {
+            "text": "是",
+            "status": "normal",
+            "key": "1"
+        },
+        {
+            "text": "否",
+            "status": "normal",
+            "key": "2"
+        }
+    ],
+    "eventUpPersonId": "7a8a8f3947ed85e50147ed8bae0e0000",
+    "eventUpPersonName": "administrator",
+    "eventHappenTime": "",
+    "date": "2018-08-28",
+    "time": "15:04",
+    "eventHappenAddress": "",
+    "eventUpResource": 2,
+    "xy": "9215401.256893665,2853760.466257402",
+    "x": 9215401.256893665,
+    "y": 2853760.466257402,
+    "endShow": "1",
+    "endShowStr": "是",
+    "isEndShow": [
+        {
+            "text": "是",
+            "status": "normal",
+            "key": "1"
+        },
+        {
+            "text": "否",
+            "status": "normal",
+            "key": "2"
+        }
+    ],
+    "attachIds": "",
+    "myshow": {
+        "bgshow": true,
+        "camerashow": true,
+        "videoshow": true
+    },
+    "imgarray": {}
+}

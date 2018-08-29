@@ -1,10 +1,10 @@
 (function (window) {
   var mockFlag = false;
-  // var serviceUrl = "http://61.160.70.170:18186/";
+  var serviceUrl = "http://61.160.70.170:18186/";
   // var serviceUrl = "http://61.160.70.170:8888/";
   // var serviceUrl = "http://10.63.48.168:58888/";
   // var serviceUrl = "http://10.63.32.89:57777/";
-  var serviceUrl = "http://61.185.20.71:80/"
+  // var serviceUrl = "http://61.185.20.71:80/"
   // var serviceUrl = "http://192.168.1.11:8080/";
   
   var serviceUrlSet = window.localStorage.getItem('ipBp2');
@@ -25,7 +25,8 @@
       }
       return serviceUrlSet2;
     },
-    mapCenter: [7663518.5383787, 4661344.4169003],
+    //mapCenter: [7663518.5383787, 4661344.4169003],
+    mapCenter: [ 108.3548267,34.7867622 ],
     mapServiceUrl: "http://61.185.20.73:58888/",
     serviceUrlMock: mockFlag ? 'http://192.168.1.207:3000/' : serviceUrlSet,
     flowId: "TEST",
